@@ -14,17 +14,13 @@
 
 ### Выбор метода реализации
 
-Я бы попробовал объединить два метода Single SPA и Module Federation
+Выбираем Module Federation т.к.
 
-Авторизацию и Основной модуль (Main) я бы выделил как Single SPA сущности т.к:
- - обеспечит маршрутизацию по путям "/" , "/signup", "/signin"
- - эти сущности более независимы, команда авторизация может быть вообще командой для многих продуктов
- - может спокойно отлаживаться, добавлять новые механизмы без влияния на все систему
- - модуль авторации нужен не так часто - тянуть его каждый раз не стоит
+ - в новой версии может обеспечить маршрутизацию по путям "/" , "/signup", "/signin"
+ - есть больше опыт и понимание как это устроено
+ - можно легче шарить переиспользуемый код 
 
-Сам модуль Main более тесно переплетен, тут я бы использовал Module Federation для создания логических  частей с единой ответственностью:
-- Profile info - где мы можем обновить данные о пользователе, изменить аватар
-- Card list - отображение списка изображений (карточек), удаление, добавление, лайки
+У нас получает вот такая структура с 5 (пятью) микрофронтендами
 
 ```md
 /auth-microfrontend         // Микрофронтенд авторизации
@@ -60,7 +56,6 @@
             CurrentUserContext.js   // Компонента профиля пользователя
             EditAvatarPopup.js      // Всплывающее окно изменения аватара
             EditProfilePopup.js     // Всплывающее окно изменения информации о профиле
-            PopupWithForm.js        // Базовая реализация всплывающего окна
         /styles
             popup.css
             profile.css
@@ -78,6 +73,10 @@
             places.css
         /utils
             api.js                  // Апи связанное только с карточками и изображениями: дать список карточек, добавить, удалить, поставить лайк
+//shared-components-microfrontend   // Микрофронтенд для общих компонент системы
+    /src
+        /components
+          PopupWithForm.js        // Базовая реализация всплывающего окна
 
 ```
 
@@ -86,6 +85,10 @@
 PopupWithForm.js - Это элемент будет используется в нескольких местах, есть некоторое дублривание кода, что плохо, как вариант, вынести общие компонет в отдельный модуль/либу 
 
 ## Задание №2
+
+Схема: [Draw.io](https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=arch_template_task2.drawio&page-id=S9S3dTGNHZGxb8ddAdWJ#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1TUX6Lx2IzCeh8i_OrVAxTXddexRRR3iJ%26export%3Ddownload#%7B%22pageId%22%3A%22S9S3dTGNHZGxb8ddAdWJ%22%7D)
+
+Ссылка на файл: https://drive.google.com/file/d/1TUX6Lx2IzCeh8i_OrVAxTXddexRRR3iJ/view?usp=sharing
 
 Схема: https://app.diagrams.net/#G1TUX6Lx2IzCeh8i_OrVAxTXddexRRR3iJ#%7B%22pageId%22%3A%22S9S3dTGNHZGxb8ddAdWJ%22%7D
 
